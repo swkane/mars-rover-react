@@ -1,4 +1,6 @@
 import React from 'react';
+import GetImageButton from './GetImageButton';
+import ImageDisplay from './ImageDisplay';
 
 const API_KEY = "TWxJdaVFVvAtgp7IqxtPENyts0XuXiGicOzXtDRp";
 
@@ -11,15 +13,15 @@ export default class GetImageForm extends React.Component {
   }
 
   handleRover = (e) => {
-    // write a function here
+    this.setState({rover: e.target.value})
   }
 
   handleCamera = (e) => {
-    // write a function here
+    this.setState({camera: e.target.value})
   }
 
   handleSol = (e) => {
-    // write a function here
+    this.setState({sol: e.target.value})
   }
 
 
@@ -31,28 +33,32 @@ export default class GetImageForm extends React.Component {
     fetch(imageUrl)
       .then(response => response.json())
       .then(data => {
-        debugger
+        this.setState({images: data.photos})
         // this is where you will fetch your images
       });
   }
       render() {
         return (
-          <form>
-            <label htmlFor="rover">Rover</label>
-            <select onChange={this.handleRover} id="rover" value={this.state.rover}>
-              <option value="Curiosity">Curiosity</option>
-              <option value="Opportunity">Opportunity</option>
-              <option value="Spirit">Spirit</option>
-            </select>
-            <label htmlFor="camera">Camera</label>
-            <select onChange={this.handleCamera} id="camera" value={this.state.camera}>
-              <option value="fhaz">FHAZ (Front Hazard)</option>
-              <option value="rhaz">RHAZ (Rear Hazard)</option>
-              <option value="navcam">NAVCAM (Navigation Cam)</option>
-            </select>
-            <label htmlFor="sol">Martian Sol: 1000-2000</label>
-            <input type="number" onChange={this.handleSol} max="2000" min="1000" value={this.state.sol}/>
-          </form>
+          <div>
+            <form>
+              <label htmlFor="rover">Rover</label>
+              <select onChange={this.handleRover} id="rover" value={this.state.rover}>
+                <option value="Curiosity">Curiosity</option>
+                <option value="Opportunity">Opportunity</option>
+                <option value="Spirit">Spirit</option>
+              </select>
+              <label htmlFor="camera">Camera</label>
+              <select onChange={this.handleCamera} id="camera" value={this.state.camera}>
+                <option value="fhaz">FHAZ (Front Hazard)</option>
+                <option value="rhaz">RHAZ (Rear Hazard)</option>
+                <option value="navcam">NAVCAM (Navigation Cam)</option>
+              </select>
+              <label htmlFor="sol">Martian Sol: 1000-2000</label>
+              <input type="number" onChange={this.handleSol} max="2000" min="1000" value={this.state.sol}/>
+            </form>
+            <GetImageButton fetchRoverImage={this.fetchRoverImage} />
+            <ImageDisplay images={this.state.images} />
+          </div>
         )
       }
   }
